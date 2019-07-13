@@ -16,13 +16,15 @@ def main():
     rotten = pd.read_json(rotten_filename, lines=True)
     wikidata = pd.read_json(wikidata_filename, lines=True)
     
-    # Clean data
+    # Clean data by extracting only the necessary columns.
     # print(omdb.columns.values)
     omdb = omdb[
         ['imdb_id',
          'omdb_awards'          # awards won: text describing awards won by the movie
         ]
     ]
+    omdb = omdb.sort_values(by=['imdb_id'])
+    omdb = omdb.set_index('imdb_id')
     # print(omdb)
     
     # print(rotten.columns.values)
@@ -35,6 +37,8 @@ def main():
          'critic_percent'       # critic percent who gave a positive review (out of 100)
         ]
     ]
+    rotten = rotten.sort_values(by=['imdb_id'])
+    rotten = rotten.set_index('imdb_id')
     # print(rotten)
 
     # print(wikidata.columns.values)
@@ -43,7 +47,14 @@ def main():
          'made_profit'          # made profit? Boolean calculated from 'cost' and 'box office'
         ]
     ]
+    wikidata = wikidata.sort_values(by=['imdb_id'])
+    wikidata = wikidata.set_index('imdb_id')
     # print(wikidata)
+
+
+    # Join the DataFrames by index (imdb_id)
+    movies = omdb.join(rotten).join(wikidata)
+    print(movies)
 
 
 if __name__ == "__main__":
