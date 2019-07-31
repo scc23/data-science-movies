@@ -86,6 +86,14 @@ def main():
     print("Correlation coefficient between critic reviews and profit/loss: {}".format(critic_reviews_vs_profit))
     print("Correlation coefficient between audience reviews and profit/loss: {}".format(audience_reviews_vs_profit))
 
+    # Plot the data
+    # plt.plot(critic_percent_vs_audience_reviews['critic_percent'], critic_percent_vs_audience_reviews['audience_percent'], 'b.')
+    # plt.plot(critic_percent_vs_made_profit['critic_percent'], critic_percent_vs_made_profit['made_profit'], 'r.')
+    # plt.plot(audience_percent_vs_made_profit['audience_percent'], audience_percent_vs_made_profit['made_profit'], 'g.')
+    # plt.show()
+
+    # By looking at the correlation coefficients, and plotting the data, we can observe that there is a strong correlation between the critic reviews and audience reviews.
+    # However, the other criteria for success such as critic reviews, audience reviews, and profit/loss do not correlate as much.
 
 if __name__ == "__main__":
     main()
