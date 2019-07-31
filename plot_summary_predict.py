@@ -18,7 +18,6 @@ import string
 # nltk.download('punkt')
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
-stop_words = stopwords.words('english')
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 
@@ -47,7 +46,6 @@ def main():
     plot_summaries = omdb[['imdb_id', 'omdb_plot']]
     plot_summaries = plot_summaries.sort_values(by=['imdb_id'])
     plot_summaries = plot_summaries.set_index('imdb_id')
-    # print(plot_summaries)
 
     wikidata = wikidata.sort_values(by=['imdb_id'])
     wikidata = wikidata.set_index('imdb_id')
@@ -61,7 +59,6 @@ def main():
     # Drop the entries that have no publication date.
     # wikidata = wikidata.dropna()
     movies_data = pd.merge(wikidata, plot_summaries, on='imdb_id')
-    # print(movies_data.shape)
     # Remove movies with no plot summary.
     movies_data = movies_data[movies_data['omdb_plot'] != 'N/A']
     # Convert plot summaries to lowercase.
@@ -71,23 +68,29 @@ def main():
     # Tokenize strings
     movies_data['omdb_plot'] = movies_data['omdb_plot'].apply(tokenize)
     # Remove stop words.
+    stop_words = stopwords.words('english')
+    stop_words.append('platform')
+    stop_words.append('film')
     movies_data['omdb_plot'] = movies_data['omdb_plot'].apply(lambda x: [word for word in x if word not in stop_words])
-
-    # print(movies_data.shape)
-    # print(movies_data)
+    movies_data['omdb_text'] = movies_data['omdb_plot'].apply(lambda x: ' '.join(x))
 
     # Create and generate word cloud image.
-    # text = movies_data['omdb_plot']
-    # wordcloud = WordCloud().generate(text)
-    # wordcloud = WordCloud().generate(' '.join(movies_data['omdb_plot']))
-
+    omdb_text = movies_data['omdb_text'].values
+    wordcloud = WordCloud(
+        width=800,
+        height=400,
+        background_color='white').generate(str(omdb_text))
     # Display the generated word cloud.
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
+    plt.tight_layout(pad=0)
     plt.show()
 
-    # print(genres)
+    # print(movies_data)
 
+    
+
+    movies_data.to_csv('genre_predictions.csv', index=False)
     
 
 
