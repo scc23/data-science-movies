@@ -23,10 +23,10 @@ All of our code is located in the main project directory.
 
 ### 1. Movie Success Criteria Correlation
 Run the following command: 'python3 movies_correlation.py'<br/>
-- This Python script will output correlation coefficients and display a scatterplot.
+- This Python script will output correlation coefficients of various movie success criteria and display a scatterplot.
 
 ### 2. Movie Genre Predictions
 Run the following command: 'python3 plot_summary_predict.py'<br/>
-- This Python script will output the f1 score of our predictions, and a couple of example genre predictions.
+- This Python script will clean our data, train a model, perform some analysis, and output the f1 score of our movie genre predictions as well as a couple of example genre predictions.
 
 ### 3. Movie Success Predictions
