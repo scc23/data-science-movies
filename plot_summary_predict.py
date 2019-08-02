@@ -1,9 +1,4 @@
-# Predict the success of movies by popularity based on plot summaries (NLP).
-
-# 1. Predict genres from plot summaries.
-# 2. Analyze the trends of movie genres over time.
-# 3. Correlate the genres to the current trend to observe which genres are popular.
-
+# Predict movie genres based on their plot summaries (NLP).
 
 import sys
 import pandas as pd
@@ -26,18 +21,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
 
-
-
+# Function that removes punctuations from the plot summaries
 def remove_punctuations(summary):
     for punc in string.punctuation:
         summary = summary.replace(punc, '')
     return summary
 
+# Function that tokenizes the plot summaries into words.
 def tokenize(x):
     tokens = word_tokenize(x)
     token_words = [w for w in tokens if w.isalpha()]
     return token_words
 
+# Function that generates a word cloud of the most common words.
 def generate_word_cloud(plot_summaries_words):
     print('Generating word cloud image...')
     summaries_text = plot_summaries_words.values
@@ -51,7 +47,7 @@ def generate_word_cloud(plot_summaries_words):
     plt.tight_layout(pad=0)
     plt.show()
 
-
+# Main function.
 def main():
     # Read JSON files into Pandas DataFrames
     print('Reading data into DataFrames...')
@@ -127,8 +123,6 @@ def main():
         for genre_code in row['genre']:
             movies_data2.loc[index, genre_code] = movies_data2.loc[index, genre_code] + 1
 
-    # print(movies_data2)
-
     # Get the number of counts for each genre.
     # genres_count = []
     # for col in movies_data2.columns[2:]:
@@ -138,21 +132,13 @@ def main():
     # genre_labels = []
     # for label in genres:
     #     genre_labels.append(genre_map.get(label))
-
     # print(genre_labels)
-
-    # print(len(genres))
-    # print(len(genres_count))
-    
-    # print(movies_data.columns)
-    # print(movies_data2.columns)
 
     print('Converting plot summaries to features...')
     multilabel_binarizer = MultiLabelBinarizer()
     multilabel_binarizer.fit(movies_data2['genre'])
 
     # Extract features from cleaned plot summaries by usng tf-idf.
-    # tfidf_vectorizer = TfidfVectorizer()
     tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=500)  # Use the 500 most frequent words in the data as features.
 
     # Split data into train and validation data sets.
@@ -202,6 +188,7 @@ def main():
 
     for i in range(10):
         k = X_valid.sample(1).index[0]
+
         predicted_genre = make_predictions(X_valid[k])
         actual_genre = movies_data2['genre'][k]
 
@@ -218,6 +205,5 @@ def main():
         print('\tPredicted genre: {}\n\tActual genre: {}\n'.format(predicted_genre_labels, actual_genre_labels))
 
     
-
 if __name__ == "__main__":
     main()
