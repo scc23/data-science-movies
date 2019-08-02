@@ -8,9 +8,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.pipeline import Pipeline
 import string
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
@@ -19,6 +16,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
+import nltk
+
+nltk.download('stopwords')
+nltk.download('punkt')
 
 
 # Function that removes punctuations from the plot summaries
