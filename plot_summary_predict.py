@@ -140,7 +140,7 @@ def main():
     multilabel_binarizer.fit(movies_data2['genre'])
 
     # Extract features from cleaned plot summaries by usng tf-idf.
-    tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=500)  # Use the 500 most frequent words in the data as features.
+    tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=500)
 
     # Split data into train and validation data sets.
     X = movies_data2['clean_summary']
@@ -161,9 +161,6 @@ def main():
     # Train the model.
     print('Training model...')
     model.fit(X_train_tfidf, y_train)
-
-    # Print the score of the model on a validation subset of the data.
-    # print('Score of the model: {}'.format(model.score(X_valid_tfidf, y_valid)))
 
     # Predict on validation data set.
     print('Making predictions...')
