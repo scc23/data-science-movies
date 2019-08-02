@@ -180,18 +180,18 @@ def main():
 
 
     # Show 10 genre predictions, and compare it with the actual genres.
-    def make_predictions(q):
-        q_vec = tfidf_vectorizer.transform([q])
-        q_pred = model.predict_proba(q_vec)
+    def make_predictions(data):
+        data_tfidf = tfidf_vectorizer.transform([data])
+        data_prediction = model.predict_proba(data_tfidf)
         t = 0.25
-        q_pred = (q_pred >= t).astype(int)
-        return multilabel_binarizer.inverse_transform(q_pred)
+        data_prediction = (data_prediction >= t).astype(int)
+        return multilabel_binarizer.inverse_transform(data_prediction)
 
     for i in range(10):
-        k = X_valid.sample(1).index[0]
+        data = X_valid.sample(1).index[0]
 
-        predicted_genre = make_predictions(X_valid[k])
-        actual_genre = movies_data2['genre'][k]
+        predicted_genre = make_predictions(X_valid[data])
+        actual_genre = movies_data2['genre'][data]
 
         predicted_genre_labels = []
         for code_set in predicted_genre:
@@ -202,7 +202,7 @@ def main():
         for code in actual_genre:
             actual_genre_labels.append(genre_map.get(code))
 
-        print('IMDB ID: {}'.format(k))
+        print('IMDB ID: {}'.format(data))
         print('\tPredicted genre: {}\n\tActual genre: {}\n'.format(predicted_genre_labels, actual_genre_labels))
 
     
