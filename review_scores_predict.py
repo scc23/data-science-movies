@@ -2,7 +2,7 @@
 # Can you predict review scores from other data we have about the movie? Maybe genre
 # determines a lot about the success of a movie? Or maybe the actors?
 
-# TODO:
+# LIMITATIONS:
 # add a seaborn genre categorical graph (see reference below)
 # look into PCA for dimensionality reductions
 # look into classification_report, confusion_matrix
@@ -22,9 +22,9 @@ from sklearn.svm import SVC
 from sklearn.pipeline import make_pipeline
 
 OUTPUT_TEMPLATE = (
-    # 'MLP regressor (genre):      {mlp_reg_genre:.3g}'
+    'MLP regressor (genre):      {mlp_reg_genre:.3g}'
     # 'MLP regressor (coo):        {mlp_reg_coo:.3g}'
-    'MLP regressor (cast):       {mlp_reg_cast:.3g}'
+    # 'MLP regressor (cast):       {mlp_reg_cast:.3g}'
 )
 
 
@@ -38,8 +38,8 @@ def normalize_audience_percent(df):
 
 def main():
     # Read JSON files into Pandas DataFrames
-    rotten_filename = "../movies/data/rotten-tomatoes.json.gz"
-    wikidata_filename = "../movies/data/wikidata-movies.json.gz"
+    rotten_filename = "./movies/data/rotten-tomatoes.json.gz"
+    wikidata_filename = "./movies/data/wikidata-movies.json.gz"
 
     # create data frames
     rotten = get_data(rotten_filename)
@@ -108,13 +108,13 @@ def main():
     X_train_genre, X_valid_genre, y_train_genre, y_valid_genre = train_test_split(
         X_genre, y_genre)
 
-    # # mlp regressor
-    # neurons_per_layer = len(X_columns_genre)
-    # mlp_reg_genre = MLPRegressor(
-    #     hidden_layer_sizes=(neurons_per_layer, neurons_per_layer),
-    #     activation='logistic'
-    # )
-    # mlp_reg_genre.fit(X_train_genre, y_train_genre)
+    # mlp regressor
+    neurons_per_layer = len(X_columns_genre)
+    mlp_reg_genre = MLPRegressor(
+        hidden_layer_sizes=(neurons_per_layer, neurons_per_layer),
+        activation='logistic'
+    )
+    mlp_reg_genre.fit(X_train_genre, y_train_genre)
 
     ###################################################################################################
     ########################### train an MLP Regressor on country_of_origin ###########################
@@ -165,16 +165,16 @@ def main():
     X_train_cast, X_valid_cast, y_train_cast, y_valid_cast = train_test_split(
         X_cast, y_cast)
 
-    # mlp regressor
-    neurons_per_layer_cast = len(X_columns_cast)
-    mlp_reg_cast = MLPRegressor(hidden_layer_sizes=(
-        neurons_per_layer_cast, neurons_per_layer_cast))
-    mlp_reg_cast.fit(X_train_cast, y_train_cast)
+    # # mlp regressor
+    # neurons_per_layer_cast = len(X_columns_cast)
+    # mlp_reg_cast = MLPRegressor(hidden_layer_sizes=(
+    #     neurons_per_layer_cast, neurons_per_layer_cast))
+    # mlp_reg_cast.fit(X_train_cast, y_train_cast)
 
     print(OUTPUT_TEMPLATE.format(
-        # mlp_reg_genre=mlp_reg_genre.score(X_valid_genre, y_valid_genre)
+        mlp_reg_genre=mlp_reg_genre.score(X_valid_genre, y_valid_genre)
         # mlp_reg_coo=mlp_reg_coo.score(X_valid_coo, y_valid_coo)
-        mlp_reg_cast=mlp_reg_cast.score(X_valid_cast, y_valid_cast)
+        # mlp_reg_cast=mlp_reg_cast.score(X_valid_cast, y_valid_cast)
     ))
 
 
@@ -186,9 +186,11 @@ if __name__ == "__main__":
 # 1. https://www.datacamp.com/community/tutorials/categorical-data
 # 2. https://www.kdnuggets.com/2016/10/beginners-guide-neural-networks-python-scikit-learn.html/2
 # 3. https://datascience.stackexchange.com/questions/36049/how-to-adjust-the-hyperparameters-of-mlp-classifier-to-get-more-perfect-performa
-# Bayesian classifier: 0.00185
-# kNN classifier:      0.0148 (10 Neighbors)
-# SVM classifier:      0.181
-# MLP classifier:      0.0247
-# MLP regressor:       0.229 (with just genre)
-# MLP regressor (coo): 0.0397
+# Bayesian classifier:         0.00185
+# kNN classifier:              0.0148 (10 Neighbors)
+# SVM classifier:              0.181
+# MLP classifier:              0.0247
+# Note it wasn't a classification task so the results above are not accurate.
+
+# MLP regressor (genre):       0.229
+# MLP regressor (coo):         0.0397
