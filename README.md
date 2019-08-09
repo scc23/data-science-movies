@@ -1,12 +1,9 @@
-# CMPT 353 Project
-
-https://coursys.sfu.ca/2019su-cmpt-353-d1/pages/Project<br/>
-https://coursys.sfu.ca/2019su-cmpt-353-d1/pages/ProjectMovies
+# Computational Data Science - Movies Analysis
 
 ## Group Members
 
-Sherman Chao Wen Chow (301232684)<br/>
-Ahsan Naveed (301228556)<br/>
+Sherman Chao Wen Chow<br/>
+Ahsan Naveed<br/>
 
 ## Required Libraries
 
